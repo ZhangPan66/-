@@ -6,11 +6,15 @@ import {
     Button,
     FormItem,
     Input,
-    Col
+    Col,
+    Radio,
+    Checkbox,
 } from 'element-ui'
 Vue.use(Form);
 Vue.use(Col)
 Vue.use(FormItem)
 Vue.use(Button)
 Vue.use(Input)
+Vue.use(Radio)
+Vue.use(Checkbox)
 Vue.prototype.$message = Message

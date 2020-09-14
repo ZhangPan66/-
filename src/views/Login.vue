@@ -7,7 +7,7 @@
                 <input id="pwd" type="password" placeholder="密码" v-model="password">
                 <button @click="login">登录</button>
                 <p class="register">
-                    <router-link to="/registerv">注册</router-link>
+                    <router-link to="/register">注册</router-link>
                     <router-link to="">忘记密码?</router-link>
                 </p>
             </div>

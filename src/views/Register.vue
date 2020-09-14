@@ -6,14 +6,14 @@
         <el-input placeholder="账户名" v-model="user.usernmae"></el-input>
       </el-form-item>
       <el-form-item prop="tel">
-        <el-input placeholder="请输入手机号" v-model="user.tel"></el-input>
+        <el-input placeholder="邮箱账号" v-model="user.tel"></el-input>
       </el-form-item>
-      <el-form-item>
-        <el-col :span="19">
-          <el-input placeholder="请输入手机验证码" v-model="user.code"></el-input>
+      <el-form-item prop="code">
+        <el-col :span="18">
+          <el-input placeholder="请输入验证码" v-model="user.code" ></el-input>
         </el-col>
-        <el-col :span="5">
-          <span>获取验证码</span>
+        <el-col :span="6">
+          <span @click='getCode($event)'>获取验证码</span>
         </el-col>
       </el-form-item>
       <el-form-item prop="password">
@@ -22,8 +22,11 @@
       <el-form-item prop="checkpassword">
         <el-input placeholder="验证密码" v-model="user.checkpassword"></el-input>
       </el-form-item>
-      <el-button @click="handleClick">注册</el-button>
+      <el-button @click="handleClick($event)">注册</el-button>
+      <el-checkbox v-model="agree">阅读并接受协议</el-checkbox>
+       <div v-if='!agree&&isShow' style="color:white" >请勾选“阅读并接受百度用户协议</div>
     </el-form>
+     
   </div>
 </template>
 <script>
@@ -34,6 +37,19 @@ export default {
       var reg = /^(?![0-9]*$)[a-zA-Z0-9]{6,20}$/;
      if (!value.match(reg)) {
         callback(new Error("用户名由字母数字构成最少六位"));
+      } else {
+        callback();
+      }
+    };
+    // 验证验证码
+    var validateCode = (rule, value, callback) => {
+      var reg = /[0-9][4]$/;
+      if (value === "") {
+        callback(new Error("请输入验证码"));
+      } else if (!value.match(reg)) {
+        callback(
+          new Error("请输入四位验证码")
+        );
       } else {
         callback();
       }
@@ -66,12 +82,12 @@ export default {
     };
     //验证手机格式是否正确
     var validatephone = (rule, value, callback) => {
-      var reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+      var reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 
       if (!value) {
-        callback(new Error("请输入手机号"));
+        callback(new Error("请输入邮箱"));
       } else if (!value.match(reg)) {
-        callback(new Error("请输入正确的手机号码"));
+        callback(new Error("请输入正确的邮箱账号"));
       } else {
         callback();
       }
@@ -82,13 +98,18 @@ export default {
         password: "",
         checkpassword: "",
         tel: "",
-        code: ""
+        code: "",
       },
+      agree:false,
+      isShow:false,
+      // 是否已经发送验证码
+      isSend:true,
       rules: {
         usernmae: [{ validator: validatename, trigger: "blur" }],
         password: [{ validator: validatepass, trigger: "blur" }],
         checkpassword: [{ validator: validatecheck, trigger: "blur" }],
         tel: [{ validator: validatephone, trigger: "blur" }],
+        code:[{ validator: validateCode, trigger: "blur"}]
         
       }
     };
@@ -96,7 +117,8 @@ export default {
   methods: {
     //处理注册点击事件
     handleClick(){
-      this.$refs.userMessage.validate(bollean=>{
+      if(this.agree){
+        this.$refs.userMessage.validate(bollean=>{
         console.log(this.user.usernmae)
           if(bollean){
               this.$axios.get('https://www.baidu.com',{
@@ -108,10 +130,36 @@ export default {
                   this.$message.error("注册成功")
                 }
               }).catch(res=>{
-                this.$message.error('注册失败')
+      
+                this.$message({
+                  showClose:true,
+                  message:"注册失败，请重试",
+                  type:'error',
+                })
               })
           }
       })
+      }else{
+        this.isShow=true;
+      }
+    },
+    //获取验证码
+ getCode(e){
+      if(this.isSend){
+        // this.$axios();
+        this.isSend=false;
+        var count=60;
+        e.target.innerText="重新发送(60s)"
+        var clear=setInterval(()=>{
+          count--;
+          e.target.innerText=`重新发送(${count}s)`
+          if(count===0){
+            clearInterval(clear)
+            this.isSend=true;
+            e.target.innerText='获取验证码';
+          }
+        },1000)
+      }
     }
   },
 };
@@ -141,10 +189,12 @@ export default {
     /deep/.el-form-item__content {
       border-bottom: 1px solid white;
       span {
-        display: inline-block;
-        width: 70px;
-        height: 40px;
         color: white;
+        cursor: pointer;
+        user-select: none;
+        //   background-image: url("../assets/theme-bg.webp");
+
+        // background-size: 100%;
         // opacity: none;
       }
     }
@@ -170,6 +220,9 @@ export default {
       border: none;
       color: white;
       font-size: 14px;
+    }
+    .el-checkbox{
+      margin: 10px;
     }
   }
 }
