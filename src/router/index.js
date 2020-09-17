@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store/index'
 import Home from '../views/Home.vue'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
@@ -42,10 +43,10 @@ router.beforeEach((to,from,next)=>{
   }
   // 表示去登录页面和注册页面
   if(to.path === '/login' || to.path === '/register') return next()
-  // 表示未登录去访问其它页面
-  const tokenStr = window.sessionStorage.getItem('token')
   // 已经登录
+  const tokenStr = window.sessionStorage.getItem('token')
   if(tokenStr) return next()
+  // 未登录去访问其它页面
   next('/login')
 })
 export default router
