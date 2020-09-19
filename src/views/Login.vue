@@ -3,12 +3,12 @@
       <div class="login-box">
             <p class="login-form-title">无人机综合管控平台</p>
             <div class="login-form-container">
-                <el-form :model="LoginruleForm" status-icon :rules="Loginrules" ref="LoginruleForm" label-width="100px" class="demo-LoginruleForm">
+                <el-form :model="LoginruleForm" status-icon :rules="Loginrules" ref="LoginruleForm" class="demo-LoginruleForm">
                     <el-form-item prop="username">
                         <el-input placeholder="用户名" type="text" v-model="LoginruleForm.username" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item prop="pwd">
-                        <el-input placeholder="密码" type="password" v-model="LoginruleForm.password" autocomplete="off"></el-input>
+                        <el-input placeholder="密码" type="password" v-model="LoginruleForm.pwd" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item prop="yzm">
                         <el-input placeholder="验证码" v-model="LoginruleForm.yzm"></el-input>
@@ -34,17 +34,56 @@
 <script>
 export default {
     data(){
+        var validatorUsename = (rule, value, callback)=>{
+            // 用户名正则表达式
+            var str1 = /^(?![0-9]*$)[a-zA-Z0-9]{6,20}$/
+            // 手机号码正则表达式
+            var str2 = /^1[3456789]\d{9}$/
+            if(!value){
+                return callback(new Error('账号不能为空！'))
+            }else if(str2.exec(value)||str1.exec(value))
+                {
+                    callback()
+                }else{
+                    return callback(new Error('账号格式不正确！'))
+                }
+        };
+        var validatorPwd = (rule, value, callback)=>{
+            if(value===''){
+                return callback(new Error('密码不能为空！'))
+                console.log(value)
+            }else if(value.length<8){
+                return callback(new Error('密码长度过短'))
+            }else{
+                callback()
+            }
+        };
+        var validatorYZM = (rule, value, callback)=>{
+            if(!value){
+                return callback(new Error('请输入验证码'))
+            }else{
+                callback()
+            }
+        };
         return {
             LoginruleForm:{
                 // 用户名
                 username:'',
                 // 密码
-                password:'',
+                pwd:'',
                 // 验证码
                 yzm:''
             },
             Loginrules:{
-
+                username:[
+                    {validator: validatorUsename, trigger: 'blur'}
+                ],
+                pwd:[
+                    {validator: validatorPwd, trigger: 'blur'}
+                ],
+                yzm:[
+                    {validator: validatorYZM, trigger: 'blur'}
+                ]
             },
         }
     },
@@ -122,18 +161,24 @@ export default {
             width: 400px;
             /deep/ .el-form-item__content{
                 margin-left: 0!important;
+                margin-bottom: 40px;
             }
             /deep/ input{
                 width: 100%;
                 height: 30px;
                 border: none;
+                border-radius: 0;
                 border-bottom: 1px solid #FFFFFF;
                 background: transparent;
                 outline: none;
                 color: #FFFFFF;
                 line-height: 30px;
                 font-size: 18px;
-                margin-bottom: 40px;
+                // margin-bottom: 20px;
+                &::placeholder{
+                    color: #fff;
+                    opacity: .6;
+                }
             }
             button{
                 width: 400px;
