@@ -95,11 +95,11 @@ export default {
             var str2 = /^1[3456789]\d{9}$/
             if(str2.exec(this.LoginruleForm.username)||str1.exec(this.LoginruleForm.username)){
                 // 用户名满足要求
-                if(this.LoginruleForm.password.length>=8){
-                    this.$axios.post('http://rap2.taobao.org:38080/app/mock/265153/example/1599650769658',
+                if(this.LoginruleForm.pwd.length>=8){
+                    this.$axios.post('http://10.7.182.97:8000/login/',
                     {
                         username:this.LoginruleForm.username,
-                        password:this.LoginruleForm.password
+                        password:this.LoginruleForm.pwd
                     }
                     ).then(resp=>{
                         var data = resp.data
