@@ -3,11 +3,18 @@ import VueRouter from 'vue-router'
 import store from '../store/index'
 import Home from '../views/Home.vue'
 import Login from '@/views/Login.vue'
+import Header from '@/components/home/Header'
 import Register from '@/views/Register.vue'
 import Option from '@/views/Option.vue'
 import AddUav from '@/components/option/uavserver/AddUav.vue'
 import LookUav from '@/components/option/uavserver/LookUav.vue'
 import BuySafe from '@/components/option/uavserver/BuySafe'
+import Vip from '@/components/option/uavserver/Vip'
+import Message from '@/components/option/uavserver/Message'
+import Fix from '@/components/option/uavserver/Fix'
+import Vipcn from '@/components/option/uavserver/Vipcn'
+import Police from '@/components/option/uavserver/Police'
+import Personal from '@/components/option/uavserver/Personal'
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,6 +27,10 @@ const routes = [
     path: '/home',
     name:Home,
     component: Home
+  },
+  {
+    path:"/header",
+    component:Header,
   },
   {
     path: '/login',
@@ -43,9 +54,35 @@ const routes = [
       {
         path:'/lookuav',
         component:LookUav
-      },{
+      },
+      {
         path:'/buysafe',
         component:BuySafe
+      },
+      {
+        path:'/vip',
+        component:Vip
+      },
+      {
+        path:'/message',
+        component:Message
+      },
+      {
+        path:'/fix',
+        name:"Fix",
+        component:Fix
+      },
+      {
+        path:"/vipcn",
+        component:Vipcn,
+      },
+      {
+        path:'/police',
+        component:Police
+      },
+      {
+        path:'/personal',
+        component:Personal,
       }
     ]
   }

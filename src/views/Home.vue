@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <header></header>
+    <header>
+      <Head></Head>
+    </header>
     <main>
       <ClassLogin></ClassLogin>
       <ZJmap></ZJmap>
@@ -18,6 +20,7 @@ import PlanFly from '@/components/home/PlanFly.vue'
 import FlyNum from '@/components/home/FlyNum.vue'
 import Menu from '@/components/home/Menu.vue'
 import ClassLogin from '@/components/home/ClassLogin.vue'
+import Head from '@/components/home/Header.vue'
 export default {
   name: 'Home',
   components: {
@@ -25,7 +28,8 @@ export default {
     PlanFly,
     FlyNum,
     Menu,
-    ClassLogin
+    ClassLogin,
+    Head
   } 
 }
 </script>
@@ -35,7 +39,7 @@ export default {
     height: 100%;
     background: #051628;
     header{
-      height: 10%;
+      height: 13%;
       width: 100%;
     }
     main{

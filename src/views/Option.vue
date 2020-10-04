@@ -1,12 +1,14 @@
 <template>
   <div class="option">
-    <header>头部</header>
+    <header>
+        <Head></Head>
+    </header>
     <main>
       <el-row class="tac">
-        <el-col :span="6">
+        <el-col :span="5">
             <Nav></Nav>
         </el-col>
-        <el-col :span="18" class="option-menu-container">
+        <el-col :span="19" class="option-menu-container">
             <router-view></router-view>
         </el-col>
       </el-row>
@@ -16,9 +18,11 @@
 
 <script>
 import Nav from "@/components/option/Nav.vue"
+import Head from '@/components/home/Header.vue'
 export default {
     components:{
-        Nav
+        Nav,
+        Head
     }
 };
 </script>
@@ -29,18 +33,18 @@ export default {
   width: 100%;
   background: #051628;
   header {
-    height: 10%;
+    height: 15%;
     width: 100%;
   }
   main {
-    height: 90%;
+    height: 85%;
     width: 100%;
     .tac{
         width: 100%;
         height: 100%;
         padding-bottom: 30px;
         .option-menu-container{
-            width: 73%;
+            width: 75%;
             height: 100%;
             background: #fff;
             border-radius: 5px;

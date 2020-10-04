@@ -20,9 +20,13 @@ import {
     Steps,
     Step,
     Tabs,
-    TabPane
+    TabPane,
+    Select,
+    Option
 } from 'element-ui'
 Vue.use(Form);
+Vue.use(Select);
+Vue.use(Option)
 Vue.use(Col)
 Vue.use(FormItem)
 Vue.use(Button)

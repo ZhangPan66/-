@@ -26,9 +26,9 @@
         </template>
         <el-menu-item-group>
           <!-- <template slot="title">分组一</template> -->
-          <el-menu-item index="2-1">查看当前用户所有无人机</el-menu-item>
-          <el-menu-item index="2-2">添加无人机</el-menu-item>
-          <el-menu-item index="2-3">购买保险申请</el-menu-item>
+          <el-menu-item index="/vip">个人会员</el-menu-item>
+          <el-menu-item index="/vipcn">企业会员</el-menu-item>
+          <el-menu-item index="/police">公安部门</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="3">
@@ -38,9 +38,9 @@
         </template>
         <el-menu-item-group>
           <!-- <template slot="title">分组一</template> -->
-          <el-menu-item index="3-1">查看当前用户所有无人机</el-menu-item>
-          <el-menu-item index="3-2">添加无人机</el-menu-item>
-          <el-menu-item index="3-3">购买保险申请</el-menu-item>
+          <el-menu-item index="/personal">普通个人用户</el-menu-item>
+          <el-menu-item index="3-2">普通企业用户</el-menu-item>
+          <el-menu-item index="/message">用户个人信息</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>
@@ -70,7 +70,6 @@ export default {
         // 单独每一个列表
         background:#051628;
            /deep/ .el-submenu__title{
-                padding-left: 75px!important;
                 color: #fff;
                 i{
                     margin-right: 20px;
@@ -89,7 +88,6 @@ export default {
                         li{
                             color: #fff;
                             padding: 0;
-                            padding-left:125px!important;
                             box-sizing: border-box;
                             font-size: 12px;
                             // text-align: center;
@@ -99,5 +97,4 @@ export default {
              }
         }
     }
-
 </style>

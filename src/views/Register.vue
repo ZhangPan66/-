@@ -122,7 +122,6 @@ export default {
     handleClick() {
       if (this.agree) {
         this.$refs.userMessage.validate(bollean => {
-          console.log(this.user.username);
           console.log(`${!(!this.agree&&this.isShow)}`)
           if (bollean) {
             this.$axios
