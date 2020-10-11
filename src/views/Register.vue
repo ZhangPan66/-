@@ -122,10 +122,10 @@ export default {
     handleClick() {
       if (this.agree) {
         this.$refs.userMessage.validate(bollean => {
-          console.log(`${!(!this.agree&&this.isShow)}`)
+          // console.log(`${!(!this.agree&&this.isShow)}`)
           if (bollean) {
             this.$axios
-              .post("http://10.7.182.97:8000/register/", {
+              .post("api/register/", {
                   username: this.user.username,
                   password: this.user.password,
                   email: this.user.email,
@@ -133,7 +133,7 @@ export default {
                   agreement: `${!(!this.agree&&this.isShow)}`
               })
               .then(res => {
-                console.log(res)
+                // console.log(res)
                 if(res.status==200){
                   if (res.data.code==30000) {
                   this.$message.success(res.data.message);
@@ -156,10 +156,10 @@ export default {
     //获取验证码
     // 1055671200@qq.com
     getCode(e) {
-      console.log(this.user.email=='')
+      // console.log(this.user.email=='')
       if (this.isSend&&this.user.email!='') {
         this.$axios.get(
-          `http://10.7.182.97:8000/email/?email=${this.user.email}`,
+          `api/email/?email=${this.user.email}`,
           // {
           //   method: "get",
           //   params: {

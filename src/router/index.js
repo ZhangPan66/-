@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '../store/index'
+// import store from '../store/index'
 import Home from '../views/Home.vue'
 import Login from '@/views/Login.vue'
 import Header from '@/components/home/Header'
@@ -15,6 +15,7 @@ import Fix from '@/components/option/uavserver/Fix'
 import Vipcn from '@/components/option/uavserver/Vipcn'
 import Police from '@/components/option/uavserver/Police'
 import Personal from '@/components/option/uavserver/Personal'
+import Changepwd from '@/views/Changepwd'
 Vue.use(VueRouter)
 
 const routes = [
@@ -38,6 +39,11 @@ const routes = [
     component: Login
   },
   {
+    path: '/changepwd',
+    name: Changepwd,
+    component:Changepwd
+  },
+  {
     path: '/register',
     name:Register,
     component: Register
@@ -49,18 +55,22 @@ const routes = [
     children:[
       {
         path:'/adduav',
+        name:'AddUav',
         component:AddUav
       },
       {
         path:'/lookuav',
+        name:'LookUav',
         component:LookUav
       },
       {
         path:'/buysafe',
+        name:'BuySafe',
         component:BuySafe
       },
       {
         path:'/vip',
+        name:'Vip',
         component:Vip
       },
       {
@@ -95,17 +105,17 @@ const router = new VueRouter({
 })
 
 // 路由守卫
-// router.beforeEach((to,from,next)=>{
-//   // 判断跳转的页面是否存在
-//   if(to.name==null){
-//     next('/')
-//   }
-//   // 表示去登录页面和注册页面
-//   if(to.path === '/login' || to.path === '/register') return next()
-//   // 已经登录
-//   const tokenStr = window.sessionStorage.getItem('token')
-//   if(tokenStr) return next()
-//   // 未登录去访问其它页面
-//   next('/login')
-// })
+router.beforeEach((to,from,next)=>{
+  // 判断跳转的页面是否存在
+  if(to.name==null){
+    next('/')
+  }
+  // 表示去登录页面和注册页面
+  if(to.path === '/login' || to.path === '/register' || to.path === '/changepwd') return next()
+  // 已经登录
+  const tokenStr = window.sessionStorage.getItem('token')
+  if(tokenStr) return next()
+  // 未登录去访问其它页面
+  next('/login')
+})
 export default router

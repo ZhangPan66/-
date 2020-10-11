@@ -22,7 +22,8 @@ import {
     Tabs,
     TabPane,
     Select,
-    Option
+    Option,
+    Slider
 } from 'element-ui'
 Vue.use(Form);
 Vue.use(Select);
@@ -45,6 +46,7 @@ Vue.use(Steps)
 Vue.use(Step)
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(Slider)
 
 
 Vue.prototype.$message = Message

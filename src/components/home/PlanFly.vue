@@ -26,10 +26,21 @@
 import option from '@/assets/js/echarts/planOption.js'
 export default {
     methods:{
+        // 获取今天计划飞行
+        getPlanFlyData(){
+            this.$axios.get('planform/').then(resp=>{
+                console.log(resp)
+            })
+        },
+        // 绘制今日计划飞行表格
         drawPlan(){
             let myPlan = this.$echarts.init(document.getElementById('plan'))
             myPlan.setOption(option)
         }
+
+    },
+    created(){
+        this.getPlanFlyData()
     },
     mounted(){
         this.drawPlan()

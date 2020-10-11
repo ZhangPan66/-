@@ -3,27 +3,27 @@
     <h3 class="addUav-title">添加无人机</h3>
     <div class="addUav-container">
       <el-form
-        :model="ruleForm"
+        :model="addUavRuleForm"
         :rules="rules"
-        ref="ruleForm"
+        ref="addUavRuleForm"
         label-width="100px"
-        class="demo-ruleForm"
+        class="demo-addUavRuleForm"
         label-position="top"
       >
-        <el-form-item label="品牌名称" prop="name">
-          <el-input v-model="ruleForm.name"></el-input>
+        <el-form-item label="品牌名称" prop="brand">
+          <el-input v-model="addUavRuleForm.brand"></el-input>
         </el-form-item>
-        <el-form-item label="型号" prop="xinhao">
-          <el-input v-model="ruleForm.xinhao"></el-input>
+        <el-form-item label="型号" prop="model">
+          <el-input v-model="addUavRuleForm.model"></el-input>
         </el-form-item>
-        <el-form-item label="无人机注册号/生产序列号" prop="number">
-          <el-input v-model="ruleForm.number"></el-input>
+        <el-form-item label="无人机注册号/生产序列号" prop="serial_no">
+          <el-input v-model="addUavRuleForm.serial_no"></el-input>
         </el-form-item>
-        <el-form-item label="购买日期" prop="buyDate">
-          <el-input v-model="ruleForm.buyDate"></el-input>
+        <el-form-item label="购买日期（格式：20xx-xx-xx）" prop="buy_date">
+          <el-input v-model="addUavRuleForm.buy_date"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')"
+          <el-button type="primary" @click="submitForm(addUavRuleForm)"
             >确认添加</el-button
           >
         </el-form-item>
@@ -36,34 +36,47 @@
 export default {
   data() {
     return {
-      ruleForm: {
-        name: "",
-        xinhao: "",
-        number: "",
-        buyDate: ""
+      addUavRuleForm: {
+        brand: "",
+        model: "",
+        serial_no: "",
+        buy_date: ""
       },
       rules: {
-        name: [
-          { required: true, message: "请输入活动名称", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+        brand: [{ required: true, message: "请输入品牌", trigger: "blur" }],
+        model: [{ required: true, message: "请输入型号", trigger: "blur" }],
+        serial_no: [
+          { required: true, message: "请输入无人机注册号", trigger: "blur" }
         ],
-        xinhao: [
-          { required: true, message: "请输入活动名称", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
-        ],
-        number: [
-          { required: true, message: "请输入活动名称", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
-        ],
-        buyDate: [
-          { required: true, message: "请输入活动名称", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+        buy_date: [
+          { required: true, message: "请输入购买日期", trigger: "blur" }
         ]
       }
     };
   },
   methods: {
-    
+    submitForm(fromData) {
+      this.$refs.addUavRuleForm.validate(valid => {
+        // 表单还有未填完的信息
+        if (!valid) return this.$message.error("请完成无人机信息的填写！");
+        const { brand, model, serial_no, buy_date } = fromData;
+        this.$axios
+          .post("api/add_uav/", {
+            brand,
+            model,
+            serial_no,
+            buy_date
+          })
+          .then(resp => {
+            if (resp.data.code === 40000) {
+              this.$message.success(resp.data.message);
+              this.$refs.addUavRuleForm.resetFields();
+            } else {
+              this.$message.error(resp.data.message);
+            }
+          });
+      });
+    }
   }
 };
 </script>
@@ -84,15 +97,15 @@ export default {
     font-weight: 500;
     color: #333333;
   }
-  &-container{
+  &-container {
     width: 385px;
-    .el-form{
+    .el-form {
       display: flex;
       flex-direction: column;
       align-items: center;
-      .el-form-item{
+      .el-form-item {
         width: 100%;
-        /deep/.el-form-item__label{
+        /deep/.el-form-item__label {
           height: 20px;
           font-size: 12px;
           line-height: 20px;
@@ -100,24 +113,24 @@ export default {
           font-weight: 500;
           color: #333333;
         }
-        .el-form-item__content{
-          .el-input{
-            /deep/input{
+        .el-form-item__content {
+          .el-input {
+            /deep/input {
               height: 30px;
               width: 90%;
             }
           }
-          .el-button{
+          .el-button {
             width: 150px;
             height: 30px;
             line-height: 30px;
             padding: 0;
-            background: #06218A;
-            border-radius:27px;
+            background: #06218a;
+            border-radius: 27px;
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            bottom: -60px
+            bottom: -60px;
           }
         }
       }

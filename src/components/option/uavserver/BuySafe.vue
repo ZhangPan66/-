@@ -31,7 +31,7 @@
         </el-table>
         <p v-if="active===2">申请已提交，请耐心等待！</p>
       </div>
-      <el-button style="margin-top: 12px;" @click="next">下一步</el-button>
+      <el-button style="margin-top: 12px;" @click="next">{{btnText}}</el-button>
     </div>
   </div>
 </template>
@@ -40,15 +40,18 @@
 export default {
   data() {
     return {
+      // 记录当前活动页面下标
       active: 0,
+      // 要展示页面的数组
       activeTabs: ["first", "scend"],
+      // 按钮文字
+      btnText:"下一步",
       ruleForm: {
         number: ""
       },
       rules: {
         number: [
-          { required: true, message: "请输入活动名称", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+          { required: true, message: "请输入无人机序号", trigger: "blur" },
         ]
       },
       tableData: [
@@ -66,14 +69,22 @@ export default {
   },
   methods: {
     next() {
-      if (this.active++ > 2) this.active = 0;
-      console.log(this.activeTab);
-    }
+      this.active++
+      if(this.active > 2){
+        this.active = 0
+      }
+      if(this.active === 2){
+        this.btnText = "确认"
+      }
+    },
   },
   computed: {
     activeTab() {
       return this.activeTabs[this.active];
     }
+  },
+  created(){
+
   }
 };
 </script>

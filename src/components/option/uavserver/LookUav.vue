@@ -7,16 +7,16 @@
     </div>
     <div class="fromdata-box">
       <template>
-        <el-table :data="tableData" border style="width: 100%">
-          <el-table-column prop="cid" label="序号">
+        <el-table :data="uavsData" border style="width: 100%">
+          <el-table-column prop="uno" label="序号">
           </el-table-column>
-          <el-table-column prop="name" label="品牌">
+          <el-table-column prop="brand" label="品牌">
           </el-table-column>
-          <el-table-column prop="count" label="型号"></el-table-column>
-          <el-table-column prop="xinhao" label="无人机注册号/生产序列号" width="265"></el-table-column>
-          <el-table-column prop="buyDate" label="购买日期"></el-table-column>
-          <el-table-column prop="isLogin" label="是否实名登记"> </el-table-column>
-          <el-table-column prop="isBuySafe" label="是否购买保险"></el-table-column>
+          <el-table-column prop="model" label="型号"></el-table-column>
+          <el-table-column prop="serial_no" label="无人机注册号/生产序列号" width="265"></el-table-column>
+          <el-table-column prop="buy_date" label="购买日期"></el-table-column>
+          <el-table-column prop="user" label="是否实名登记"> </el-table-column>
+          <el-table-column prop="is_insurance" label="是否购买保险"></el-table-column>
         </el-table>
       </template>
     </div>
@@ -24,7 +24,10 @@
         <el-pagination
           background
           layout="prev, pager, next"
-          :total="1000">
+          :total=total
+          :page-size=5
+
+          @current-change="handleCurrentChange">
         </el-pagination>
       </div>
   </div>
@@ -34,46 +37,45 @@
 export default {
   data() {
     return {
-      tableData: [
-        {
-          cid: "1",
-          name: "王小虎",
-          count:'1234567',
-          xinhao: "abcdddd1",
-          buyDate:"2020-9-20",
-          isLogin:'是',
-          isBuySafe:'是'
-        },
-        {
-          cid: "2",
-          name: "王小虎",
-          count:'1234567',
-          xinhao: "abcdddd1",
-          buyDate:"2020-9-20",
-          isLogin:'是',
-          isBuySafe:'是'
-        },
-        {
-          cid: "3",
-          name: "王小虎",
-          count:'1234567',
-          xinhao: "abcdddd1",
-          buyDate:"2020-9-20",
-          isLogin:'是',
-          isBuySafe:'是'
-        },
-         {
-          cid: "4",
-          name: "王小虎",
-          count:'1234567',
-          xinhao: "abcdddd1",
-          buyDate:"2020-9-20",
-          isLogin:'是',
-          isBuySafe:'是'
-        },
+      // 从服务器获取到的源数据
+      originUavsData: [
       ],
+      // 无人机的总数
+      total:0,
+      // 当前显示的页数
+      nowPage:1,
+      // 每页显示的个数
+      pageNum:5
     };
-  }
+  },
+  methods:{
+    // 获取当前用户说有无人机信息
+    getUserNAVData(){
+      this.$axios.get('api/uav_all/').then(resp=>{
+        var data = resp.data
+        this.total = data.uavs.length
+        this.originUavsData = data.uavs || []
+      })
+    },
+    handleCurrentChange(val){
+      this.nowPage = val
+    }
+  },
+  created(){
+    this.getUserNAVData()
+  },
+  computed:{
+    uavsData(){
+      var uavs = JSON.parse(JSON.stringify(this.originUavsData))
+      var showUavsData = []
+      if(this.originUavsData.length<=5){
+        return this.originUavsData
+      }else{
+        showUavsData = uavs.splice((this.nowPage-1) * 5 ,this.pageNum)
+      }
+      return showUavsData
+    }
+  },
 };
 </script>
 
@@ -148,6 +150,7 @@ export default {
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
+      margin-bottom: 15px;
       .el-pagination{
         .el-pager{
           li{
